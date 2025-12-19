@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="k_FWD_Robot">
+
+
+
+    <xacro:include filename="$(find k_FWD_Robot_description)/urdf/lider_head/2d_lider_head.gazebo.xacro"/>
+
+
+
+    <link name="lidar_link">
+        <inertial>
+          <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+          <mass value="0.0"/>
+          <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
+        </inertial>
+        <visual>
+          <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0"/>
+          <geometry>
+            <mesh filename="package://k_FWD_Robot_description/meshes/2d_lidar.STL"/>
+          </geometry>
+          <material name="">
+            <color rgba="1.0 1.0 1.0 1.0"/>
+            <texture filename=""/>
+          </material>
+        </visual>
+        <collision>
+           <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+           <geometry>
+            <mesh filename="package://k_FWD_Robot_description/meshes/2d_lidar.STL"/>
+           </geometry>
+        </collision>
+    </link>
+
+    <joint name="lidar_joint" type="fixed">
+        <axis xyz="0 1 0" />
+        <origin xyz="0 0 0.06" rpy="0 0 0"/>
+        <parent link="lidar_base_link"/>
+        <child link="lidar_link"/>
+    </joint>
+
+
+</robot>

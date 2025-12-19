@@ -1,0 +1,344 @@
+
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="k_FWD_robot">
+  <xacro:macro name="k11_robot_gazebo">
+
+    <!-- =============== Gazebo =============== -->
+    <gazebo>
+      <plugin filename="gz_ros2_control-system" name="gz_ros2_control::GazeboSimROS2ControlPlugin">
+        <parameters>$(find k_FWD_Robot_description)/config/diff_drive_controller_sim.yaml</parameters>
+      </plugin>
+      <plugin filename="gz-sim-sensors-system" name="gz::sim::systems::Sensors">
+        <render_engine>ogre2</render_engine>
+      </plugin>
+    </gazebo>
+
+
+    <gazebo>
+      <plugin name="gazebo_ros2_control" filename="libgazebo_ros2_control.so"/>
+    </gazebo>
+
+<!-- 
+    <gazebo reference="lidar_link" >
+      <sensor name="lidar_link" type="gpu_lidar">
+        <gz_frame_id>lidar_link</gz_frame_id>
+        <topic>scan</topic>
+        <update_rate>30</update_rate>
+        <lidar>
+          <scan>
+            <horizontal>
+              <samples>2800</samples>
+              <resolution>1</resolution>
+              <min_angle>-3.14</min_angle>
+              <max_angle>3.14</max_angle>
+            </horizontal>
+            <vertical>
+              <samples>1</samples>
+              <resolution>0.1</resolution>
+              <min_angle>0.0</min_angle>
+              <max_angle>0.0</max_angle>
+            </vertical>
+          </scan>
+          <range>
+            <min>0.2</min>
+            <max>30.0</max>
+            <resolution>0.01</resolution>
+          </range>
+          <frame_id>/lidar_link</frame_id>
+        </lidar>
+        <alwaysOn>ture</alwaysOn>
+        <visualize>true</visualize>
+      </sensor>
+    </gazebo>
+ -->
+
+
+
+
+
+
+    <!-- siked steer robot plugin -->
+
+
+    <gazebo>
+      <plugin
+        filename="gz-sim-diff-drive-system"
+        name="gz::sim::systems::DiffDrive">
+        <!-- Topic for the command input -->
+        <topic>/cmd_vel</topic>
+
+        <!-- Wheel joints -->
+        <left_joint>front_left_wheel_joint</left_joint>
+        <left_joint>rear_left_wheel_joint</left_joint>
+        <right_joint>front_right_wheel_joint</right_joint>
+        <right_joint>rear_right_wheel_joint</right_joint>
+
+        <!-- Wheel parameters -->
+        <wheel_separation>0.3</wheel_separation>
+        <wheel_radius>0.06</wheel_radius> 
+
+        <!-- Control gains and limits (optional) -->
+        <max_velocity>3.0</max_velocity> 
+        <max_linear_acceleration>1</max_linear_acceleration>
+        <min_linear_acceleration>-1</min_linear_acceleration>
+        <max_angular_acceleration>2</max_angular_acceleration>
+        <min_angular_acceleration>-2</min_angular_acceleration>
+        <max_linear_velocity>0.5</max_linear_velocity>
+        <min_linear_velocity>-0.5</min_linear_velocity>
+        <max_angular_velocity>1</max_angular_velocity>
+        <min_angular_velocity>-1</min_angular_velocity>
+        
+        <!-- Other parameters (optional) -->
+        <odom_topic>odom</odom_topic> 
+        <tf_topic>tf</tf_topic>
+        <frame_id>odom</frame_id>
+        <child_frame_id>base_footprint</child_frame_id>
+        <odom_publish_frequency>30</odom_publish_frequency>
+      </plugin>
+
+      <plugin
+        filename="gz-sim-joint-state-publisher-system"
+        name="gz::sim::systems::JointStatePublisher">
+        <topic>joint_states</topic> <!--from <ros><remapping> -->
+        <joint_name>front_left_wheel_joint</joint_name>
+        <joint_name>front_right_wheel_joint</joint_name>
+        <joint_name>rear_left_wheel_joint</joint_name>
+        <joint_name>rear_right_wheel_joint</joint_name>
+      </plugin>
+    </gazebo>
+
+
+
+
+
+
+    <!-- lidar robot_pluging -->
+
+
+    <gazebo reference="lidar_link">
+     <sensor name="gpu_lidar" type="gpu_lidar">
+      <update_rate>10</update_rate>
+      <topic>scan</topic>
+      <gz_frame_id>lidar_link</gz_frame_id>
+      <lidar>
+        <scan>
+          <horizontal>
+            <samples>720</samples>
+            <!--(max_angle-min_angle)/samples * resolution -->
+            <resolution>1</resolution>
+            <min_angle>-3.14156</min_angle>
+            <max_angle>3.14156</max_angle>
+          </horizontal>
+          <!-- Dirty hack for fake lidar detections with ogre 1 rendering in VM -->
+          <!-- <vertical>
+              <samples>3</samples>
+              <min_angle>-0.001</min_angle>
+              <max_angle>0.001</max_angle>
+          </vertical> -->
+        </scan>
+        <range>
+          <min>0.05</min>
+          <max>10.0</max>
+          <resolution>0.01</resolution>
+        </range>
+        <noise>
+          <type>gaussian</type>
+          <mean>0.0</mean>
+          <stddev>0.01</stddev>
+        </noise>
+        <frame_id>lidar_link</frame_id>
+      </lidar>
+      <always_on>1</always_on>
+      <visualize>true</visualize>
+     </sensor>
+    </gazebo>
+
+
+
+
+
+
+    <!-- ultrasonic robot_pluging -->
+
+    <gazebo reference="ultrasonic_link">
+    <!-- Define a sensor of type "ray" with the name "sonar" -->
+     <sensor type="ray" name="sonar">
+  
+      <!-- Set the position and orientation of the sensor relative to the reference link (x, y, z, roll, pitch, yaw) -->
+      <pose>0 0 0 0 0 0</pose>
+  
+      <!-- Enable or disable visualization of the sensor in the Gazebo simulation -->
+      <visualize>false</visualize>
+  
+      <!-- Set the update rate for the sensor in Hz (how often it updates) -->
+      <update_rate>5</update_rate>
+  
+      <!-- Define the ray properties of the sensor -->
+      <ray>
+        <!-- Define the scan parameters for the sensor -->
+        <scan>
+          <horizontal>
+            <!-- Number of horizontal samples (rays) per scan -->
+            <samples>5</samples>
+      
+            <!-- Resolution of the scan (how fine the angular increments are) -->
+            <resolution>1.0</resolution>
+      
+            <!-- Minimum angle for the horizontal scan in radians -->
+            <min_angle>-0.18</min_angle>
+      
+            <!-- Maximum angle for the horizontal scan in radians -->
+            <max_angle>0.18</max_angle>
+          </horizontal>
+  
+          <vertical>
+            <!-- Number of vertical samples (rays) per scan -->
+           <samples>5</samples>
+      
+            <!-- Resolution of the vertical scan -->
+            <resolution>1</resolution>
+      
+            <!-- Minimum angle for the vertical scan in radians -->
+            <min_angle>-0.035</min_angle>
+      
+            <!-- Maximum angle for the vertical scan in radians -->
+            <max_angle>0.035</max_angle>
+          </vertical>
+        </scan>
+  
+        <!-- Define the range properties of the sensor -->
+        <range>
+          <!-- Minimum distance the sensor can measure -->
+          <min>0.01</min>
+  
+          <!-- Maximum distance the sensor can measure -->
+          <max>4</max>
+  
+          <!-- Resolution of the distance measurements -->
+          <resolution>0.01</resolution>
+        </range>
+      </ray>
+  
+      <!-- Attach a Gazebo plugin for interfacing with ROS -->
+      <plugin filename="libgazebo_ros_range.so" name="gazebo_ros_range">
+        <!-- Gaussian noise added to the sensor readings -->
+        <gaussianNoise>0.005</gaussianNoise>
+  
+        <!-- Always keep the sensor active -->
+        <alwaysOn>true</alwaysOn>
+  
+        <!-- Update rate for the sensor in Hz -->
+        <updateRate>5</updateRate>
+  
+        <!-- ROS topic name where the sensor data will be published -->
+        <topicName>/genius/sonar</topicName>
+  
+        <!-- Frame name for the sensor, used for transformations -->
+        <frameName>ultrasonic_link</frameName>
+  
+        <!-- Field of view of the sensor in radians -->
+        <fov>0.5</fov>
+  
+        <!-- Type of radiation emitted by the sensor (here, 'ultrasound' for an ultrasonic sensor) -->
+        <radiation>ultrasound</radiation>
+      </plugin>
+     </sensor>
+    </gazebo>
+
+
+
+
+
+    
+    <!-- imu robot_pluging -->
+    <gazebo reference="imu_link">
+      <sensor name="imu" type="imu">
+       <always_on>1</always_on>
+       <update_rate>50</update_rate>
+       <visualize>true</visualize>
+       <topic>imu</topic>
+       <enable_metrics>true</enable_metrics>
+       <gz_frame_id>imu_link</gz_frame_id>
+      </sensor>
+    </gazebo>
+
+
+
+    <!-- camera robot_pluging -->
+    <gazebo reference="camera_link">
+     <sensor name="camera" type="camera">
+      <camera>
+        <horizontal_fov>1.3962634</horizontal_fov>
+        <image>
+          <width>640</width>
+          <height>480</height>
+          <format>R8G8B8</format>
+        </image>
+        <clip>
+          <near>0.1</near>
+          <far>15</far>
+        </clip>
+        <noise>
+          <type>gaussian</type>
+          <!-- Noise is sampled independently per pixel on each frame.
+               That pixel's noise value is added to each of its color
+               channels, which at that point lie in the range [0,1]. -->
+          <mean>0.0</mean>
+          <stddev>0.007</stddev>
+        </noise>
+        <optical_frame_id>camera_link_optical</optical_frame_id>
+        <camera_info_topic>camera/camera_info</camera_info_topic>
+      </camera>
+      <always_on>1</always_on>
+      <update_rate>20</update_rate>
+      <visualize>true</visualize>
+      <topic>camera/image</topic>
+     </sensor>
+    </gazebo>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 
+
+    <gazebo reference="navsat_link">
+      <sensor name="navsat" type="navsat">
+        <always_on>1</always_on>
+        <update_rate>1</update_rate>
+        <topic>navsat</topic>
+        <gz_frame_id>navsat_link</gz_frame_id>
+      </sensor>
+    </gazebo> -->
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </xacro:macro>
+</robot>
+

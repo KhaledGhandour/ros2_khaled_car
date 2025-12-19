@@ -1,0 +1,40 @@
+<?xml version="1.0" ?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <xacro:include filename="$(find k_FWD_Robot_description)/urdf/ultrasonic/ultrasonic.gazebo.xacro"/>
+  <link name="ultrasonic_link">
+    <visual>
+      <geometry>
+        <box size="0.01 0.01 0.01"/> 
+      </geometry>
+      <material name="">
+        <color rgba="0.0 0.0 0.0 1.0"/> 
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+      <geometry>
+        <box size="0.01 0.01 0.01"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <joint name="ultrasonic_joint" type="fixed">
+    <parent link="base_link"/> 
+    <child link="ultrasonic_link"/>
+    <origin xyz="0.2 0 0.03"/> 
+  </joint>
+
+  
+
+  <gazebo reference="ultrasonic_link">
+    <material>Gazebo/Black</material>  
+  </gazebo>
+
+
+
+
+
+
+
+</robot>

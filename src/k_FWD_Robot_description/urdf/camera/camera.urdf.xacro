@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="fws_robot">
+
+
+
+
+   <xacro:include filename="$(find k_FWD_Robot_description)/urdf/camera/camera.gazebo.xacro"/>
+
+
+   <link name="camera_link">
+    <inertial>
+        <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+        <mass value="0.2"/>
+        <inertia ixx="0.0" ixy="0.0" ixz="0.0" iyy="0.0" iyz="0.0" izz="0.0"/>
+    </inertial>
+    <visual name="">
+        <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+        <geometry>
+            <mesh filename="package://k_FWD_Robot_description/meshes/DAE/sensors/camera/camera.dae"/>
+        </geometry>
+        <material name="">
+            <color rgba="1.0 1.0 0.0 1.0"/>
+            <texture filename=""/>
+        </material>
+    </visual>
+    <collision>
+        <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+        <geometry>
+            <mesh filename="package://k_FWD_Robot_description/meshes/DAE/sensors/camera/camera.dae"/>
+        </geometry>
+    </collision>
+   </link>
+
+
+
+   <joint name="camera_joint" type="fixed">
+    <origin xyz="0.2 0.0 0.09" rpy="0.0 0.0 0.0"/>
+    <parent link="base_link"/>
+    <child link="camera_link"/>
+    <axis xyz="0.0 0.0 0.0"/>
+    <limit lower="0.0" upper="0.0" effort="0.0" velocity="0.0"/>
+   </joint>
+
+   
+    
+
+
+
+
+
+
+
+
+
+
+
+</robot>

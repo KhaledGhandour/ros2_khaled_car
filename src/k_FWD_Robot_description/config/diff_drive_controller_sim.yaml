@@ -1,0 +1,75 @@
+# controller_manager:
+#   ros__parameters:
+#     update_rate: 1000  # Hz
+
+#     forward_velocity_controller:
+#       type: forward_command_controller/ForwardCommandController
+
+#     forward_position_controller:
+#       type: forward_command_controller/ForwardCommandController
+
+#     joint_state_broadcaster:
+#       type: joint_state_broadcaster/JointStateBroadcaster
+
+# forward_velocity_controller:
+#   ros__parameters:
+#     joints:
+#       - fl_wheel_joint
+#       - fr_wheel_joint
+#       - rl_wheel_joint
+#       - rr_wheel_joint
+#     interface_name: velocity
+#     command_interfaces:
+#       - velocity
+#     state_interfaces:
+#       - position
+#       - velocity
+
+# forward_position_controller:
+#   ros__parameters:
+#     joints:
+#       - fl_steering_joint
+#       - fr_steering_joint
+#       - rl_steering_joint
+#       - rr_steering_joint
+#     interface_name: position
+#     command_interfaces:
+#       - position
+#     state_interfaces:
+#       - position
+#       - velocity
+
+
+
+
+
+
+
+
+controller_manager:
+  ros__parameters:
+    update_rate: 100  # Hz
+
+    diff_drive_controller:
+      type: diff_drive_controller/DiffDriveController
+
+    joint_state_broadcaster:
+      type: joint_state_broadcaster/JointStateBroadcaster
+
+diff_drive_controller:
+  ros__parameters:
+    left_wheel_names: 
+      - "front_left_wheel_joint"
+      - "rear_left_wheel_joint"
+    right_wheel_names: 
+      - "front_right_wheel_joint" 
+      - "rear_right_wheel_joint"
+    wheel_separation: 0.3
+    wheel_radius: 0.06
+    base_frame_id: "base_link"
+    pose_covariance_diagonal: [0.001, 0.001, 0.001, 0.001, 0.001, 0.03]
+    twist_covariance_diagonal: [0.001, 0.001, 0.001, 0.001, 0.001, 0.03]
+    linear.x.max_velocity: 0.5
+    angular.z.max_velocity: 1.0
+    linear.x.max_acceleration: 1.0
+    angular.z.max_acceleration: 2.0
