@@ -100,10 +100,10 @@ The robot includes the following simulated sensors:
 - Gazebo Harmonic
 
 ### Clone the Repository
-``bash
+```bash
 git clone https://github.com/KhaledGhandour/ros2_khaled_car.git
 cd ros2_khaled_car 
-
+```
 
 
  ## Install Dependencies
@@ -113,14 +113,16 @@ rosdep update
 rosdep install --from-paths src --ignore-src -y
 ---
 ## 🏗 Build the Workspace
-colcon build
+``` colcon build
 source install/setup.bash
+```
 ---
 ## ▶️ Running the Simulation
 
 Launch Gazebo with the robot:
+```
 ros2 launch k_FWD_robot_sim fws_robot_spawn.launch.py 
-
+```
 This will:
 
 - Start Gazebo Harmonic
@@ -134,8 +136,9 @@ This will:
 ## 🎮 Teleoperation
 
 Control the robot using keyboard teleoperation:
+```
 ros2 run teleop_twist_keyboard teleop_twist_keyboard
-
+```
 
 
 Key controls:
@@ -150,16 +153,16 @@ Key controls:
 ## 🔁 Topics & Interfaces
 
 Common ROS topics used in this project
-/cmd_vel
-/odom
-/joint_states
-/scan
-/camera/image_raw
-/camera/camera_info
-/imu/data
-/range
-/tf
-/tf_static
+- /cmd_vel
+- /odom
+- /joint_states
+- /scan
+- /camera/image_raw
+- /camera/camera_info
+- /imu/data
+- /range
+- /tf
+- /tf_static
 ---
 ## 🧠 Extensions & Future Work
 
