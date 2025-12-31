@@ -107,10 +107,11 @@ cd ros2_khaled_car
 
 
  ## Install Dependencies
-
+```
 sudo apt update
 rosdep update
 rosdep install --from-paths src --ignore-src -y
+```
 ---
 ## 🏗 Build the Workspace
 ``` colcon build
