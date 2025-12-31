@@ -100,13 +100,13 @@ The robot includes the following simulated sensors:
 - Gazebo Harmonic
 
 ### Clone the Repository
-```bash
+``bash
 git clone https://github.com/KhaledGhandour/ros2_khaled_car.git
-cd ros2_khaled_car ```
+cd ros2_khaled_car 
 
----
 
-## Install Dependencies
+
+ ## Install Dependencies
 
 sudo apt update
 rosdep update
