@@ -19,7 +19,6 @@ and can be controlled using velocity commands (`/cmd_vel`) via keyboard teleoper
 - Build
 - Running the Simulation
 - Teleoperation
-- RViz Visualization
 - Topics & Interfaces
 - Extensions
 - License
@@ -89,3 +88,102 @@ The robot includes the following simulated sensors:
 
 ## 📁 Repository Structure
 
+*(Structure may slightly vary depending on updates)*
+
+---
+
+## 🛠 Installation
+
+### Prerequisites
+- Ubuntu 24.04 (recommended)
+- ROS 2 Jazzy
+- Gazebo Harmonic
+
+### Clone the Repository
+```bash
+git clone https://github.com/KhaledGhandour/ros2_khaled_car.git
+cd ros2_khaled_car
+---
+
+## Install Dependencies
+
+sudo apt update
+rosdep update
+rosdep install --from-paths src --ignore-src -y
+---
+## 🏗 Build the Workspace
+colcon build
+source install/setup.bash
+---
+## ▶️ Running the Simulation
+
+Launch Gazebo with the robot:
+ros2 launch k_FWD_robot_sim fws_robot_spawn.launch.py 
+
+This will:
+
+- Start Gazebo Harmonic
+
+- Spawn the skid-steering robot
+
+- Load ros2_control controllers
+
+- Start sensor plugins
+---
+## 🎮 Teleoperation
+
+Control the robot using keyboard teleoperation:
+ros2 run teleop_twist_keyboard teleop_twist_keyboard
+
+
+
+Key controls:
+
+-  W / X → Forward / backward
+
+-  A / D → Rotate left / right
+
+- S → Stop
+---
+
+## 🔁 Topics & Interfaces
+
+Common ROS topics used in this project
+/cmd_vel
+/odom
+/joint_states
+/scan
+/camera/image_raw
+/camera/camera_info
+/imu/data
+/range
+/tf
+/tf_static
+---
+## 🧠 Extensions & Future Work
+
+This project can be extended to include:
+
+- Navigation2 (Nav2) stack
+
+- SLAM (SLAM Toolbox)
+
+- EKF localization (robot_localization)
+
+- Autonomous path planning
+
+- Sensor fusion
+
+- Real robot hardware integration
+
+## 📜 License
+
+This project is released under the MIT License.
+
+## ⭐ Acknowledgments
+
+- ROS 2 community
+
+- Gazebo / gz-sim developers
+
+- Open-source robotics contributors
